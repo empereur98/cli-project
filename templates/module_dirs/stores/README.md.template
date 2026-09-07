@@ -1,0 +1,8 @@
+# Répertoire Stores (`stores/`) - Module {{MODULE_NAME}}
+
+## Rôle dans le module
+Ce répertoire contient les magasins d'état global (Pinia ou `useState` Nuxt) pour le module `{{MODULE_NAME}}`.
+
+## Fonctionnement
+- Il permet de maintenir et synchroniser l'état complexe du module sur plusieurs pages et composants.
+- Enregistré automatiquement via `addImportsDir` pour un accès simplifié dans l'ensemble du module.

@@ -1,0 +1,8 @@
+# Répertoire Composables (`composables/`) - Module {{MODULE_NAME}}
+
+## Rôle dans le module
+Ce répertoire héberge la logique métier réutilisable et réactive (Vue Composables / Custom Hooks) pour le module `{{MODULE_NAME}}`.
+
+## Fonctionnement
+- Les composables définis dans ce dossier sont enregistrés pour l'auto-importation globale (`addImportsDir`).
+- Ils facilitent le partage d'état réactif et de fonctions métier entre les composants et pages du module.

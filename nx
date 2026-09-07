@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# NX CLI entrypoint
+set -e
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+if [ -d "$SCRIPT_DIR/nxt-cli" ]; then
+  CLI_LIB_DIR="$SCRIPT_DIR/nxt-cli"
+else
+  CLI_LIB_DIR="$SCRIPT_DIR"
+fi
+
+source "$CLI_LIB_DIR/lib/help_formatter.sh"
+source "$CLI_LIB_DIR/lib/man_viewer.sh"
+source "$CLI_LIB_DIR/lib/git_handler.sh"
+source "$CLI_LIB_DIR/lib/tailwind_installer.sh"
+source "$CLI_LIB_DIR/lib/progress_bar.sh"
+source "$CLI_LIB_DIR/lib/project_creator.sh"
+source "$CLI_LIB_DIR/lib/module_creator.sh"
+source "$CLI_LIB_DIR/lib/module_importer.sh"
+source "$CLI_LIB_DIR/lib/module_updater.sh"
+source "$CLI_LIB_DIR/lib/module_lister.sh"
+source "$CLI_LIB_DIR/lib/module_remover.sh"
+source "$CLI_LIB_DIR/lib/cli_initializer.sh"
+source "$CLI_LIB_DIR/lib/cli_parser.sh"
+
+parse_args "$CLI_LIB_DIR" "$@"

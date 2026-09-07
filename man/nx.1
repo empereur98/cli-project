@@ -1,0 +1,40 @@
+.\" Manpage for NX CLI
+.TH NX 1 "03 September 2026" "1.0.0" "NX Manual"
+.SH NAME
+nx \- Autonomous Nuxt module scaffolder & project wrapper
+.SH SYNOPSIS
+.B ./nx
+[\fIOPTION\fR] [\fIARGS\fR]
+.SH DESCRIPTION
+.B nx
+is a cross-platform CLI tool for Nuxt 3/4 applications. It allows creating pre-configured Nuxt applications with Tailwind CSS, scaffolding autonomous modules, importing distant GitHub modules into a central registry (\fBnx.config.json\fR), and publishing module updates.
+.SH COMMANDS
+.TP
+.B create \fIPROJECT_NAME\fR
+Scaffold a new Nuxt 3/4 project pre-configured with Tailwind CSS, \fBnx.config.json\fR, and an embedded \fB./nx\fR wrapper.
+.TP
+.B \-m, \-\-module \fIMODULE_NAME\fR
+Scaffold a new autonomous Nuxt module in \fB./modules/MODULE_NAME\fR with a standalone test page.
+.TP
+.B \-i, \-\-import [\fIURL_OR_NAME\fR]
+Import remote module(s) from a GitHub repository or sync all modules defined in \fBnx.config.json\fR.
+.TP
+.B \-u, \-\-update [\fIMODULE_NAME\fR]
+Fetch and pull the latest Git changes for a specific module or all imported modules.
+.TP
+.B \-p, \-\-push [\fIMODULE_NAME\fR] [\fICOMMIT_MESSAGE\fR]
+Commit and push local modifications of a specific module (or all modified modules) back to GitHub.
+.TP
+.B \-l, \-\-list
+List all installed modules in the project with their Git status, branch, and remote URL.
+.TP
+.B man, \-\-man
+Display this manual page.
+.TP
+.B \-h, \-\-help
+Display formatted command-line help message.
+.SH FILES
+.I nx.config.json
+Central module registry storing module names, GitHub URLs, and branches.
+.SH AUTHOR
+Google DeepMind Advanced Agentic Coding Team

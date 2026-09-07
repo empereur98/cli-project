@@ -1,0 +1,32 @@
+import { defineNuxtModule, createResolver, addComponentsDir, addImportsDir } from '@nuxt/kit'
+
+export interface ModuleOptions {
+  apiBaseUrl?: string
+}
+
+export default defineNuxtModule<ModuleOptions>({
+  meta: {
+    name: '{{MODULE_NAME}}',
+    configKey: '{{CONFIG_KEY}}'
+  },
+  defaults: {
+    apiBaseUrl: 'https://api.example.com'
+  },
+  setup(options, _nuxt) {
+    const resolver = createResolver(import.meta.url)
+
+    console.log('[{{MODULE_NAME}}] Initialized with API:', options.apiBaseUrl)
+
+    // Auto-register components from ./components
+    addComponentsDir({
+      path: resolver.resolve('./components')
+    })
+
+    // Auto-register composables, services, and stores
+    addImportsDir([
+      resolver.resolve('./composables'),
+      resolver.resolve('./services'),
+      resolver.resolve('./stores')
+    ])
+  }
+})

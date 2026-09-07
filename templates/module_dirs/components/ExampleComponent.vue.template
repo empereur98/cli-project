@@ -1,0 +1,12 @@
+<template>
+  <div class="p-4 border border-slate-700 bg-slate-800 rounded-lg text-slate-100">
+    <h3 class="font-semibold text-lg">Composant Exemple ({{MODULE_NAME}})</h3>
+    <p class="text-sm text-slate-400 mt-1">
+      Composant UI réutilisable et auto-importé par Nuxt pour le module {{MODULE_NAME}}.
+    </p>
+  </div>
+</template>
+
+<script setup lang="ts">
+// Logique du composant d'exemple pour {{MODULE_NAME}}
+</script>

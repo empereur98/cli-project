@@ -1,0 +1,18 @@
+# Node dependencies
+node_modules/
+
+# Nuxt build output
+.nuxt/
+.output/
+dist/
+
+# Package manager locks
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Environment variables & OS files
+.env
+.env.*
+.DS_Store
+*.log

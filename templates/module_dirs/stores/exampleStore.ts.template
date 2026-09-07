@@ -1,0 +1,19 @@
+export const useExampleStore = () => {
+  const isLoaded = useState('{{CONFIG_KEY}}_store_is_loaded', () => false)
+  const items = useState<string[]>('{{CONFIG_KEY}}_store_items', () => [])
+
+  const addItem = (item: string) => {
+    items.value.push(item)
+  }
+
+  const setLoading = (status: boolean) => {
+    isLoaded.value = status
+  }
+
+  return {
+    isLoaded,
+    items,
+    addItem,
+    setLoading
+  }
+}

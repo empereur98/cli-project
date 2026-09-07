@@ -1,0 +1,8 @@
+# Répertoire Services (`services/`) - Module {{MODULE_NAME}}
+
+## Rôle dans le module
+Ce répertoire contient la couche d'accès aux API distantes, la logique de communication réseau et les services métier isolés pour le module `{{MODULE_NAME}}`.
+
+## Fonctionnement
+- Il isole les requêtes HTTP (ex: `$fetch`, `useFetch`, `axios`) de la couche de présentation UI.
+- Il favorise une architecture propre et testable pour la gestion des données distantes.

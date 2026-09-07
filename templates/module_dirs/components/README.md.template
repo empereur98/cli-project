@@ -1,0 +1,8 @@
+# Répertoire Components (`components/`) - Module {{MODULE_NAME}}
+
+## Rôle dans le module
+Ce répertoire regroupe l'ensemble des composants d'interface utilisateur (UI) réutilisables spécifiques au module `{{MODULE_NAME}}`.
+
+## Fonctionnement
+- Les composants situés dans ce dossier sont automatiquement enregistrés et importés par Nuxt Kit via `addComponentsDir`.
+- Ils peuvent être facilement réutilisés dans les pages du module ou exportés vers le projet parent.

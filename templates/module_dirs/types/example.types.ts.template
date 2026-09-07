@@ -1,0 +1,10 @@
+export interface ExampleConfig {
+  enabled: boolean
+  apiEndpoint?: string
+}
+
+export interface ExampleItem {
+  id: string
+  title: string
+  status: 'active' | 'inactive' | 'pending'
+}

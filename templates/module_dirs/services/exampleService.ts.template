@@ -1,0 +1,15 @@
+export interface ExampleServiceData {
+  id: string
+  name: string
+  timestamp: number
+}
+
+export class ExampleService {
+  static async fetchModuleData(): Promise<ExampleServiceData> {
+    return {
+      id: '1',
+      name: 'Données d\'exemple du service {{MODULE_NAME}}',
+      timestamp: Date.now()
+    }
+  }
+}

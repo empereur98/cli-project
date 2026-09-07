@@ -1,0 +1,8 @@
+# Répertoire Types (`types/`) - Module {{MODULE_NAME}}
+
+## Rôle dans le module
+Ce répertoire centralise les définitions de types TypeScript, interfaces et enums propres au module `{{MODULE_NAME}}`.
+
+## Fonctionnement
+- Il garantit un typage strict et une autocomplétion claire à travers tout le module.
+- Les interfaces peuvent être exportées pour typage dans le projet hôte.
