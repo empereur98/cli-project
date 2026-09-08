@@ -1,0 +1,14 @@
+# Configurations IDE / Éditeurs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Fichiers OS
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires ou logs potentiels
+*.log
+tmp/
+temp/

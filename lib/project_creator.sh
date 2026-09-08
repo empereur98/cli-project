@@ -19,7 +19,14 @@ create_project() {
 
   echo -e "\033[1;34m[INFO] Creating Nuxt project '$project_name' pre-configured with Tailwind CSS...\033[0m"
 
-  mkdir -p "$target_dir/app"
+  local config_key=$(echo "$project_name" | sed 's/-/_/g')
+
+  mkdir -p "$target_dir/app/pages"
+  mkdir -p "$target_dir/app/components"
+  mkdir -p "$target_dir/app/composables"
+  mkdir -p "$target_dir/app/services"
+  mkdir -p "$target_dir/app/types"
+  mkdir -p "$target_dir/app/stores"
   mkdir -p "$target_dir/modules"
 
   # Scaffold project configuration files
@@ -35,6 +42,31 @@ create_project() {
   # Scaffold default app.vue starter
   cp "$cli_dir/templates/app_vue_project.template" "$target_dir/app/app.vue" 2>/dev/null || \
     sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/app_vue.template" > "$target_dir/app/app.vue"
+
+  # Scaffold predefined app directories with examples & READMEs
+  sed -e "s/{{MODULE_NAME}}/$project_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
+    "$cli_dir/templates/module_dirs/pages/index_vue.template" > "$target_dir/app/pages/index.vue"
+  sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/module_dirs/pages/README.md.template" > "$target_dir/app/pages/README.md"
+
+  sed -e "s/{{MODULE_NAME}}/$project_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
+    "$cli_dir/templates/module_dirs/components/ExampleComponent.vue.template" > "$target_dir/app/components/ExampleComponent.vue"
+  sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/module_dirs/components/README.md.template" > "$target_dir/app/components/README.md"
+
+  sed -e "s/{{MODULE_NAME}}/$project_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
+    "$cli_dir/templates/module_dirs/composables/useExample.ts.template" > "$target_dir/app/composables/useExample.ts"
+  sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/module_dirs/composables/README.md.template" > "$target_dir/app/composables/README.md"
+
+  sed -e "s/{{MODULE_NAME}}/$project_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
+    "$cli_dir/templates/module_dirs/services/exampleService.ts.template" > "$target_dir/app/services/exampleService.ts"
+  sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/module_dirs/services/README.md.template" > "$target_dir/app/services/README.md"
+
+  sed -e "s/{{MODULE_NAME}}/$project_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
+    "$cli_dir/templates/module_dirs/types/example.types.ts.template" > "$target_dir/app/types/example.types.ts"
+  sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/module_dirs/types/README.md.template" > "$target_dir/app/types/README.md"
+
+  sed -e "s/{{MODULE_NAME}}/$project_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
+    "$cli_dir/templates/module_dirs/stores/exampleStore.ts.template" > "$target_dir/app/stores/exampleStore.ts"
+  sed "s/{{MODULE_NAME}}/$project_name/g" "$cli_dir/templates/module_dirs/stores/README.md.template" > "$target_dir/app/stores/README.md"
 
   # Setup Tailwind config
   setup_tailwind "$target_dir"
