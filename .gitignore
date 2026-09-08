@@ -1,7 +1,6 @@
 # Configurations IDE / Éditeurs
 .vscode/
 .idea/
-*.swp
 *~
 
 # Fichiers OS
