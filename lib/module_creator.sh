@@ -11,22 +11,22 @@ create_module() {
     exit 1
   fi
 
-  local is_inside_nuxt=false
-  local target_dir="./$module_name"
-  local tsconfig_extends="./.nuxt/tsconfig.json"
-
-  if [ -f "./nuxt.config.ts" ] || [ -f "./nuxt.config.js" ]; then
-    is_inside_nuxt=true
-    target_dir="./modules/$module_name"
-    tsconfig_extends="../../.nuxt/tsconfig.json"
+  # Feature-Driven Development rule: must be run inside an existing Nuxt project
+  if [ ! -f "./nuxt.config.ts" ] && [ ! -f "./nuxt.config.js" ] && [ ! -f "./nuxt.config.mjs" ]; then
+    echo -e "\033[1;31m[ERROR] Feature modules must be created inside an existing Nuxt project.\033[0m"
+    echo -e "\033[0;33m[HINT] Navigate to your Nuxt project root (where nuxt.config.ts is located) or create one with:\033[0m"
+    echo -e "  ./nx create <project_name>"
+    exit 1
   fi
+
+  local target_dir="./modules/$module_name"
 
   if [ -d "$target_dir" ]; then
     echo -e "\033[1;31m[ERROR] Directory '$target_dir' already exists. Aborting.\033[0m"
     exit 1
   fi
 
-  echo -e "\033[1;34m[INFO] Scaffolding autonomous module '$module_name' in $target_dir...\033[0m"
+  echo -e "\033[1;34m[INFO] Scaffolding feature module '$module_name' in $target_dir...\033[0m"
 
   mkdir -p "$target_dir/pages"
   mkdir -p "$target_dir/components"
@@ -35,16 +35,9 @@ create_module() {
   mkdir -p "$target_dir/types"
   mkdir -p "$target_dir/stores"
 
-  # Scaffold module configuration files
-  sed "s/{{MODULE_NAME}}/$module_name/g" "$cli_dir/templates/package_json.template" > "$target_dir/package.json"
-  cp "$cli_dir/templates/nuxt_config_module.template" "$target_dir/nuxt.config.ts" 2>/dev/null || \
-    cp "$cli_dir/templates/nuxt_config.template" "$target_dir/nuxt.config.ts"
-  echo "{\"extends\": \"$tsconfig_extends\"}" > "$target_dir/tsconfig.json"
-
+  # Nuxt Kit module definition: auto-registers components, composables, stores, and pages
   sed -e "s/{{MODULE_NAME}}/$module_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
     "$cli_dir/templates/index_ts.template" > "$target_dir/index.ts"
-
-  sed "s/{{MODULE_NAME}}/$module_name/g" "$cli_dir/templates/app_vue.template" > "$target_dir/app.vue"
 
   # Scaffold predefined directories with examples & READMEs
   sed -e "s/{{MODULE_NAME}}/$module_name/g" -e "s/{{CONFIG_KEY}}/$config_key/g" \
@@ -71,24 +64,26 @@ create_module() {
     "$cli_dir/templates/module_dirs/stores/exampleStore.ts.template" > "$target_dir/stores/exampleStore.ts"
   sed "s/{{MODULE_NAME}}/$module_name/g" "$cli_dir/templates/module_dirs/stores/README.md.template" > "$target_dir/stores/README.md"
 
-  # Setup Tailwind config
-  setup_tailwind "$target_dir"
+  # Auto-register module in nuxt.config.ts
+  register_in_nuxt_config "./modules/$module_name"
 
-  # Setup Git repository & .gitignore
-  setup_git "$target_dir" "$cli_dir/templates/gitignore.template"
-
-  # Auto-register module in nuxt.config.ts if inside Nuxt project
-  if [ "$is_inside_nuxt" = true ]; then
-    register_in_nuxt_config "./modules/$module_name"
+  # Sync into nx.config.json if file exists
+  if [ -f "./nx.config.json" ]; then
+    if ! grep -q "\"$module_name\"" ./nx.config.json; then
+      local tmp=$(mktemp)
+      sed "s/\"modules\": \[/\"modules\": [\n    { \"name\": \"$module_name\", \"type\": \"local\", \"path\": \".\/modules\/$module_name\" },/g" ./nx.config.json > "$tmp" 2>/dev/null && mv "$tmp" ./nx.config.json || true
+    fi
   fi
 
-  # Install Node dependencies & prepare Nuxt with progress bar
-  ( cd "$target_dir" && run_with_progress "Installing dependencies for '$module_name'" npm install )
-  ( cd "$target_dir" && run_with_progress "Generating Nuxt TypeScript declarations (nuxt prepare)" npx -y nuxt prepare )
+  # Refresh Nuxt TypeScript declarations at the project root
+  echo -e "\033[1;34m[INFO] Refreshing Nuxt TypeScript declarations (nuxt prepare)...\033[0m"
+  npx -y nuxt prepare >/dev/null 2>&1 || true
 
   echo ""
-  echo -e "\033[1;32m[SUCCESS] Autonomous Nuxt module '$module_name' created in $target_dir\033[0m"
-  echo -e "\033[0;36m[NEXT STEPS] Test standalone by running:\033[0m"
-  echo -e "  \033[1;37mcd $target_dir && npm run dev\033[0m"
+  echo -e "\033[1;32m[SUCCESS] Feature module '$module_name' created and connected to host project!\033[0m"
+  echo -e "\033[0;36m[INFO] Components, composables, stores, and pages are immediately available.\033[0m"
+  echo -e "  - Route : http://localhost:3000/$module_name"
+  echo -e "  - Path  : ./modules/$module_name"
   echo ""
 }
+

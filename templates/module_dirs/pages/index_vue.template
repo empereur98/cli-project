@@ -8,42 +8,43 @@
       <!-- Status Badge -->
       <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-400 mb-8 shadow-sm">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>{{MODULE_NAME}} — Standalone Mode</span>
+        <span>Feature Module — {{MODULE_NAME}}</span>
       </div>
 
       <!-- Main Title -->
       <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-        Hello World
+        {{MODULE_NAME}}
       </h1>
 
       <p class="text-lg text-slate-400 mb-10 max-w-lg mx-auto font-normal leading-relaxed">
-        Welcome to <strong class="text-white">{{MODULE_NAME}}</strong>. Edit
-        <code class="px-2 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300 font-mono text-sm">pages/index.vue</code>
-        and save to reload.
+        Module connecté au projet hôte. Modifiez
+        <code class="px-2 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300 font-mono text-sm">modules/{{MODULE_NAME}}/pages/index.vue</code>
+        pour commencer à développer votre fonctionnalité.
       </p>
 
       <!-- Action Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto text-left">
-        <a href="https://nuxt.com/docs" target="_blank" class="group p-4 rounded-xl bg-slate-900/50 border border-slate-800/80 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/5">
-          <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-cyan-400 transition-colors">Docs &rarr;</h3>
-          <p class="text-xs text-slate-500">Find in-depth information about Nuxt features.</p>
-        </a>
-        <a href="https://nuxt.com/modules" target="_blank" class="group p-4 rounded-xl bg-slate-900/50 border border-slate-800/80 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/5">
-          <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-indigo-400 transition-colors">Modules &rarr;</h3>
-          <p class="text-xs text-slate-500">Discover the full list of Nuxt modules.</p>
-        </a>
-        <a href="https://tailwindcss.com/docs" target="_blank" class="group p-4 rounded-xl bg-slate-900/50 border border-slate-800/80 hover:border-emerald-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/5">
-          <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-emerald-400 transition-colors">Tailwind &rarr;</h3>
-          <p class="text-xs text-slate-500">Style your module with utility-first CSS.</p>
-        </a>
+        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800/80">
+          <h3 class="text-sm font-semibold text-white mb-1">Route &rarr;</h3>
+          <p class="text-xs text-slate-400 font-mono">/{{MODULE_NAME}}</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800/80">
+          <h3 class="text-sm font-semibold text-white mb-1">Composants &rarr;</h3>
+          <p class="text-xs text-slate-400 font-mono">&lt;ExampleComponent /&gt;</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800/80">
+          <h3 class="text-sm font-semibold text-white mb-1">Auto-imports &rarr;</h3>
+          <p class="text-xs text-slate-400 font-mono">useExample()</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// Page d'accueil du module {{MODULE_NAME}} (mode standalone / bac à sable)
+// Page principale du module {{MODULE_NAME}} (accessible via /{{MODULE_NAME}})
 useHead({
-  title: '{{MODULE_NAME}} — Hello World'
+  title: '{{MODULE_NAME}} — Feature Module'
 })
 </script>
+

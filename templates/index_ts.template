@@ -1,4 +1,4 @@
-import { defineNuxtModule, createResolver, addComponentsDir, addImportsDir } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addComponentsDir, addImportsDir, extendPages } from '@nuxt/kit'
 
 export interface ModuleOptions {
   apiBaseUrl?: string
@@ -15,11 +15,12 @@ export default defineNuxtModule<ModuleOptions>({
   setup(options, _nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    console.log('[{{MODULE_NAME}}] Initialized with API:', options.apiBaseUrl)
+    console.log('[{{MODULE_NAME}}] Feature module registered')
 
-    // Auto-register components from ./components
+    // Auto-register components from ./components globally
     addComponentsDir({
-      path: resolver.resolve('./components')
+      path: resolver.resolve('./components'),
+      pathPrefix: false
     })
 
     // Auto-register composables, services, and stores
@@ -28,5 +29,15 @@ export default defineNuxtModule<ModuleOptions>({
       resolver.resolve('./services'),
       resolver.resolve('./stores')
     ])
+
+    // Wire module pages directly into the host Nuxt application router
+    extendPages((pages) => {
+      pages.push({
+        name: '{{MODULE_NAME}}',
+        path: '/{{MODULE_NAME}}',
+        file: resolver.resolve('./pages/index.vue')
+      })
+    })
   }
 })
+

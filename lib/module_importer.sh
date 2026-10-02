@@ -3,11 +3,18 @@
 register_in_nuxt_config() {
   local module_path="$1"
   local config_file="./nuxt.config.ts"
+  [ ! -f "$config_file" ] && config_file="./nuxt.config.js"
+  [ ! -f "$config_file" ] && config_file="./nuxt.config.mjs"
 
   if [ -f "$config_file" ]; then
     if ! grep -q "$module_path" "$config_file"; then
-      sed -i "s|modules: \[|modules: [\n    '$module_path',|g" "$config_file" 2>/dev/null || \
-      sed -i "" "s|modules: \[|modules: [\n    '$module_path',|g" "$config_file" 2>/dev/null || true
+      if grep -q "modules: \[" "$config_file"; then
+        sed -i "s|modules: \[|modules: [\n    '$module_path',|g" "$config_file" 2>/dev/null || \
+        sed -i "" "s|modules: \[|modules: [\n    '$module_path',|g" "$config_file" 2>/dev/null || true
+      elif grep -q "defineNuxtConfig({" "$config_file"; then
+        sed -i "s|defineNuxtConfig({|defineNuxtConfig({\n  modules: ['$module_path'],|g" "$config_file" 2>/dev/null || \
+        sed -i "" "s|defineNuxtConfig({|defineNuxtConfig({\n  modules: ['$module_path'],|g" "$config_file" 2>/dev/null || true
+      fi
     fi
   fi
 }

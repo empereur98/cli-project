@@ -1,12 +1,13 @@
 # Répertoire Pages (`pages/`) - Module {{MODULE_NAME}}
 
 ## Rôle dans le module
-Ce répertoire contient les composants Vue représentant les vues et pages du module `{{MODULE_NAME}}`.
+Ce répertoire contient les pages et vues associées à la fonctionnalité `{{MODULE_NAME}}`.
 
-## Fonctionnement
-- Les fichiers ici définissent la structure des pages du module.
-- En **mode standalone** (`npm run dev` dans le dossier du module), ces pages sont accessibles directement via le routeur Nuxt.
-- En **mode intégré** (importé dans un projet principal), ces pages ne sont **pas** injectées dans l'application hôte. Elles servent uniquement d'environnement de test (bac à sable) pour développer et tester le module en isolation.
+## Intégration dans le projet hôte
+- Les pages de ce dossier sont automatiquement connectées au routeur Nuxt principal via `extendPages` dans `modules/{{MODULE_NAME}}/index.ts`.
+- La page d'accueil de la feature est accessible sur l'URL : `http://localhost:3000/{{MODULE_NAME}}`.
+- Pour ajouter de nouvelles sous-routes (ex: `/{{MODULE_NAME}}/settings`), déclarez-les dans `extendPages` dans `index.ts`.
 
 ## Page par défaut
-- `index.vue` : Page d'accueil Hello World, affichée à la racine (`/`) en mode standalone.
+- `index.vue` : Page d'accueil de la fonctionnalité, injectée sur la route `/{{MODULE_NAME}}`.
+

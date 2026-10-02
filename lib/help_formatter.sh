@@ -7,7 +7,7 @@ show_help() {
   echo ""
   echo -e "\033[0;36mCommands:\033[0m"
   echo -e "  \033[1;32mcreate <project_name>\033[0m        Scaffold new Nuxt project with Tailwind & embedded ./nx"
-  echo -e "  \033[1;32m-m, --module <name>\033[0m          Scaffold local autonomous Nuxt module in ./modules/"
+  echo -e "  \033[1;32m-m, --module <name>\033[0m          Scaffold local feature module in ./modules/ (must run in project)"
   echo -e "  \033[1;32m-d, --delete <name>\033[0m          Remove module or model from main project"
   echo -e "  \033[1;32m--init\033[0m                       Initialize global 'nx' CLI in system/user PATH"
   echo -e "  \033[1;32m-i, --import [url|name]\033[0m      Import module(s) from nx.config.json or GitHub URL"
