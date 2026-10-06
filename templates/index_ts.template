@@ -37,6 +37,14 @@ export default defineNuxtModule<ModuleOptions>({
         path: '/{{MODULE_NAME}}',
         file: resolver.resolve('./pages/index.vue')
       })
+      // Also register pluralized route if module name doesn't end with 's' (e.g. /customer & /customers)
+      if (!'{{MODULE_NAME}}'.endsWith('s')) {
+        pages.push({
+          name: '{{MODULE_NAME}}s',
+          path: '/{{MODULE_NAME}}s',
+          file: resolver.resolve('./pages/index.vue')
+        })
+      }
     })
   }
 })

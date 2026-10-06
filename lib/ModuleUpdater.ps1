@@ -6,6 +6,7 @@ function Update-NxModule {
     $modulesDir = ".\modules"
 
     if (-not [string]::IsNullOrWhiteSpace($ModuleName)) {
+        $ModuleName = $ModuleName -replace '^easy-trade-module-', ''
         $targetDir = Join-Path $modulesDir $ModuleName
         if (-not (Test-Path $targetDir)) {
             Write-Host "[ERROR] Module '$ModuleName' not found in $modulesDir." -ForegroundColor Red

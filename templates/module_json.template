@@ -1,0 +1,6 @@
+{
+  "name": "{{MODULE_NAME}}",
+  "label": "{{PASCAL_NAME}}",
+  "order": 500,
+  "icon": "default"
+}

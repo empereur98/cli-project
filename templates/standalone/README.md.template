@@ -1,0 +1,33 @@
+# Module Nuxt : `{{MODULE_NAME}}`
+
+Module Nuxt 3/4 métier développé avec `@nuxt/kit` selon les principes de l'architecture Feature-Driven (tranches verticales).
+
+---
+
+## 📁 Structure du Module
+
+- `pages/` : Vues et écrans du module (ex: `pages/index.vue` exposé sous `http://localhost:3000/{{MODULE_NAME}}`)
+- `components/` : Composants Vue réutilisables spécifiques au module
+- `composables/` : Fonctions composables et logique réactive
+- `services/` : Services API et logique métier
+- `stores/` : Stores Pinia pour la gestion d'état
+- `types/` : Définitions et interfaces TypeScript
+- `index.ts` : Point d'entrée Nuxt Kit pour l'intégration automatique dans l'application hôte
+- `module.json` : Métadonnées et déclaration pour la navigation du dashboard
+
+---
+
+## 📦 Intégration dans un Projet Nuxt Hôte
+
+### Via la CLI `nx`
+Depuis la racine de votre application hôte :
+```bash
+nx -i https://github.com/votre-compte/{{MODULE_NAME}}.git
+```
+
+### Déploiement et Push vers le dépôt privé du module
+Pour valider et pousser vos modifications directement sur le dépôt Git dédié du module :
+```bash
+nx -p {{MODULE_NAME}} "feat: mise à jour du module"
+```
+

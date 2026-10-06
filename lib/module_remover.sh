@@ -31,21 +31,39 @@ remove_module() {
     exit 1
   fi
 
+  local clean_name="${module_name#easy-trade-module-}"
+  clean_name="${clean_name#easy-trade-}"
   local target_dir=""
-  if [ -d "./modules/$module_name" ]; then
+  if [ -d "./modules/$clean_name" ]; then
+    target_dir="./modules/$clean_name"
+  elif [ -d "./modules/$module_name" ]; then
     target_dir="./modules/$module_name"
+  elif [ -d "./modules/easy-trade-module-$clean_name" ]; then
+    target_dir="./modules/easy-trade-module-$clean_name"
+  elif [ -d "./$clean_name" ]; then
+    target_dir="./$clean_name"
   elif [ -d "./$module_name" ]; then
     target_dir="./$module_name"
+  elif [ -d "./easy-trade-module-$clean_name" ]; then
+    target_dir="./easy-trade-module-$clean_name"
+  elif [ -d "../modules/$clean_name" ]; then
+    target_dir="../modules/$clean_name"
+  elif [ -d "../modules/$module_name" ]; then
+    target_dir="../modules/$module_name"
+  elif [ -d "../modules/easy-trade-module-$clean_name" ]; then
+    target_dir="../modules/easy-trade-module-$clean_name"
   else
-    echo -e "\033[1;31m[ERROR] Module or model '$module_name' not found in ./modules/$module_name or ./$module_name.\033[0m"
+    echo -e "\033[1;31m[ERROR] Module or model '$module_name' not found in modules directory.\033[0m"
     exit 1
   fi
 
-  echo -e "\033[1;33m[INFO] Removing module '$module_name' from project...\033[0m"
+  echo -e "\033[1;33m[INFO] Removing module '$clean_name' from project...\033[0m"
 
   # Unregister from nuxt.config.ts & nx.config.json
   unregister_from_nuxt_config "$module_name"
+  unregister_from_nuxt_config "$clean_name"
   unregister_from_nx_config "$module_name"
+  unregister_from_nx_config "$clean_name"
 
   # Delete physical directory
   rm -rf "$target_dir"

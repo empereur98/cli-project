@@ -30,6 +30,33 @@ function Import-NxModule {
     if ($RepoUrl -notmatch '^https?://' -and $RepoUrl -notmatch '^git@' -and $RepoUrl -notmatch '^ssh://') {
         if ($RepoUrl -match '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') {
             $RepoUrl = "https://github.com/$RepoUrl.git"
+        } elseif ($RepoUrl -match '^[A-Za-z0-9_.-]+$') {
+            # Check if defined in nx.config.json first
+            $matchedRepo = $null
+            if (Test-Path ".\nx.config.json") {
+                try {
+                    $cfg = Get-Content ".\nx.config.json" -Raw | ConvertFrom-Json
+                    $clean = $RepoUrl -replace '^easy-trade-module-', ''
+                    $found = $cfg.modules | Where-Object { $_.name -eq $RepoUrl -or $_.name -eq $clean }
+                    if ($found -and $found.repository) {
+                        $matchedRepo = $found.repository
+                    }
+                } catch {}
+            }
+            if ($matchedRepo) {
+                $RepoUrl = $matchedRepo
+            } else {
+                # Derive default GitHub owner from current project remote
+                $defaultOwner = "empereur98"
+                try {
+                    $originUrl = git config --get remote.origin.url 2>$null
+                    if ($originUrl -match 'github\.com[:/]([^/]+)/') {
+                        $defaultOwner = $matches[1]
+                    }
+                } catch {}
+                $repoName = if ($RepoUrl.StartsWith("easy-trade-module-")) { $RepoUrl } else { "easy-trade-module-$RepoUrl" }
+                $RepoUrl = "https://github.com/$defaultOwner/$repoName.git"
+            }
         }
     }
 
@@ -39,8 +66,42 @@ function Import-NxModule {
         return
     }
 
+    function Get-CleanModuleName {
+        param([string]$Raw)
+        if ([string]::IsNullOrWhiteSpace($Raw)) { return "" }
+        $n = [System.IO.Path]::GetFileNameWithoutExtension($Raw)
+        # 1. Matches <anything>-module-<name> (e.g. easy-trade-module-audit-logs, crm-module-billing)
+        if ($n -match '^[A-Za-z0-9_.-]+-module-(.+)$') {
+            return $matches[1]
+        }
+        # 2. Matches easy-trade-<name>
+        if ($n -match '^easy-trade-(.+)$') {
+            return $matches[1]
+        }
+        # 3. Matches <project_name>-<name>
+        $proj = $null
+        if (Test-Path ".\nx.config.json") {
+            try {
+                $cfg = Get-Content ".\nx.config.json" -Raw | ConvertFrom-Json
+                if ($cfg.name) { $proj = $cfg.name }
+            } catch {}
+        }
+        if (-not $proj) { $proj = (Get-Item (Get-Location).Path).Name }
+        if ($proj) {
+            $basePrefix = $proj -replace '-dashboard[0-9]*$', ''
+            $escProj = [regex]::Escape($proj)
+            $escBase = [regex]::Escape($basePrefix)
+            if ($n -match "^$escProj-(.+)$") { return $matches[1] }
+            if ($basePrefix -and $n -match "^$escBase-(.+)$") { return $matches[1] }
+        }
+        return $n
+    }
+
     if ([string]::IsNullOrWhiteSpace($TargetName)) {
-        $TargetName = [System.IO.Path]::GetFileNameWithoutExtension($RepoUrl)
+        $rawTarget = [System.IO.Path]::GetFileNameWithoutExtension($RepoUrl)
+        $TargetName = Get-CleanModuleName $rawTarget
+    } else {
+        $TargetName = Get-CleanModuleName $TargetName
     }
 
     $targetDir = ".\modules\$TargetName"

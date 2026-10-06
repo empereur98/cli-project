@@ -10,6 +10,7 @@ function Show-NxHelp {
     Write-Host "  --init, init                 Initialize global 'nx' CLI in system/user PATH" -ForegroundColor Green
     Write-Host "  -i, --import [url|name]      Import module(s) from nx.config.json or GitHub URL" -ForegroundColor Green
     Write-Host "  -u, --update [name]          Pull latest Git changes for a module or all modules" -ForegroundColor Green
+    Write-Host "  -p, --push <name> [msg]      Stage, commit, and push module changes to remote Git" -ForegroundColor Green
     Write-Host "  -l, --list                   List all installed modules with version, repo, and role" -ForegroundColor Green
     Write-Host "  man, --man                   Open the manual documentation page" -ForegroundColor Green
     Write-Host "  -h, --help                   Display this help message and exit" -ForegroundColor Green

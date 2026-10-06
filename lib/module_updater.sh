@@ -5,6 +5,7 @@ update_module() {
   local modules_dir="./modules"
 
   if [ -n "$module_name" ]; then
+    module_name="${module_name#easy-trade-module-}"
     local target_dir="$modules_dir/$module_name"
     if [ ! -d "$target_dir" ]; then
       echo -e "\033[1;31m[ERROR] Module '$module_name' not found in $modules_dir.\033[0m"

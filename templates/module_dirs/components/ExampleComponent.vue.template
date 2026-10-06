@@ -1,12 +1,17 @@
 <template>
-  <div class="p-4 border border-slate-700 bg-slate-800 rounded-lg text-slate-100">
-    <h3 class="font-semibold text-lg">Composant Exemple ({{MODULE_NAME}})</h3>
-    <p class="text-sm text-slate-400 mt-1">
-      Composant UI réutilisable et auto-importé par Nuxt pour le module {{MODULE_NAME}}.
-    </p>
+  <div class="p-4 rounded-xl border border-slate-200 dark:border-brand-border bg-slate-50/50 dark:bg-brand-surface text-slate-800 dark:text-slate-100 flex items-center justify-between">
+    <div class="space-y-1">
+      <h3 class="font-heading font-semibold text-sm text-slate-900 dark:text-white">
+        Composant actif (<code class="text-xs font-mono text-brand-accent dark:text-brand-accentLight">&lt;ExampleComponent /&gt;</code>)
+      </h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        Composant UI réutilisable prêt à accueillir votre logique métier pour <strong>{{MODULE_NAME}}</strong>.
+      </p>
+    </div>
+    <StatusBadge status="ACTIVE" size="sm" />
   </div>
 </template>
 
 <script setup lang="ts">
-// Logique du composant d'exemple pour {{MODULE_NAME}}
+// Logique du composant pour {{MODULE_NAME}}
 </script>

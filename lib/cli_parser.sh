@@ -36,6 +36,11 @@ parse_args() {
       elif [ "$2" = "-d" ] || [ "$2" = "--delete" ]; then
         remove_module "$3" "$cli_dir"
       else
+        if [ "$2" = "--standalone" ] || [ "$2" = "-s" ] || [ "$3" = "--standalone" ] || [ "$3" = "-s" ]; then
+          echo -e "\033[1;31m[ERROR] L'option '-s' / '--standalone' a ete supprimee. Le developpement isole n'est plus supporte.\033[0m"
+          echo -e "\033[1;33mUtilisez directement : ./nx -m <nom_du_module>\033[0m"
+          exit 1
+        fi
         create_module "$2" "$cli_dir"
       fi
       exit 0
@@ -50,6 +55,10 @@ parse_args() {
       ;;
     -u|--update)
       update_module "$2"
+      exit 0
+      ;;
+    -p|--push|push)
+      push_module "$2" "$3" "$4"
       exit 0
       ;;
     -l|--list)

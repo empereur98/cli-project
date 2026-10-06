@@ -1,12 +1,12 @@
-export const useExample = () => {
-  const state = useState('{{CONFIG_KEY}}_example_state', () => 'Valeur par défaut')
+export const use{{PASCAL_NAME}} = () => {
+  const state = useState('{{CONFIG_KEY}}_state', () => 'Valeur par défaut')
 
-  const setExampleState = (val: string) => {
+  const set{{PASCAL_NAME}}State = (val: string) => {
     state.value = val
   }
 
   return {
     state,
-    setExampleState
+    set{{PASCAL_NAME}}State
   }
 }

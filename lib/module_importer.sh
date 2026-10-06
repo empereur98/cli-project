@@ -7,6 +7,9 @@ register_in_nuxt_config() {
   [ ! -f "$config_file" ] && config_file="./nuxt.config.mjs"
 
   if [ -f "$config_file" ]; then
+    if grep -q "getDiscoveredModules" "$config_file"; then
+      return 0
+    fi
     if ! grep -q "$module_path" "$config_file"; then
       if grep -q "modules: \[" "$config_file"; then
         sed -i "s|modules: \[|modules: [\n    '$module_path',|g" "$config_file" 2>/dev/null || \
@@ -39,10 +42,21 @@ import_module() {
     fi
   fi
 
-  # Normalize shorthand repo format (e.g., user/repo -> https://github.com/user/repo.git)
+  # Normalize shorthand repo format (e.g., user/repo -> https://github.com/user/repo.git or module-name)
   if [[ ! "$repo_url" =~ ^https?:// ]] && [[ ! "$repo_url" =~ ^git@ ]] && [[ ! "$repo_url" =~ ^ssh:// ]]; then
     if [[ "$repo_url" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
       repo_url="https://github.com/$repo_url.git"
+    elif [[ "$repo_url" =~ ^[A-Za-z0-9_.-]+$ ]]; then
+      default_owner="empereur98"
+      origin_url=$(git config --get remote.origin.url 2>/dev/null || true)
+      if [[ "$origin_url" =~ github\.com[:/]([^/]+)/ ]]; then
+        default_owner="${BASH_REMATCH[1]}"
+      fi
+      repo_name="$repo_url"
+      if [[ ! "$repo_name" =~ ^easy-trade-module- ]]; then
+        repo_name="easy-trade-module-$repo_name"
+      fi
+      repo_url="https://github.com/$default_owner/$repo_name.git"
     fi
   fi
 
@@ -53,8 +67,45 @@ import_module() {
     return 1 2>/dev/null || exit 1
   fi
 
+  clean_module_name() {
+    local raw="$1"
+    raw=$(basename "$raw" .git)
+    # 1. Matches <anything>-module-<name>
+    if [[ "$raw" =~ ^[A-Za-z0-9_.-]+-module-(.+)$ ]]; then
+      echo "${BASH_REMATCH[1]}"
+      return 0
+    fi
+    # 2. Matches easy-trade-<name>
+    if [[ "$raw" =~ ^easy-trade-(.+)$ ]]; then
+      echo "${BASH_REMATCH[1]}"
+      return 0
+    fi
+    # 3. Matches <project_name>-<name>
+    local proj=""
+    if [ -f "./nx.config.json" ]; then
+      proj=$(grep -o '"name": "[^"]*"' ./nx.config.json | head -1 | cut -d'"' -f4)
+    fi
+    if [ -z "$proj" ]; then
+      proj=$(basename "$(pwd)")
+    fi
+    if [ -n "$proj" ]; then
+      local base_prefix="${proj%-dashboard*}"
+      if [[ "$raw" =~ ^$proj-(.+)$ ]]; then
+        echo "${BASH_REMATCH[1]}"
+        return 0
+      fi
+      if [ -n "$base_prefix" ] && [[ "$raw" =~ ^$base_prefix-(.+)$ ]]; then
+        echo "${BASH_REMATCH[1]}"
+        return 0
+      fi
+    fi
+    echo "$raw"
+  }
+
   if [ -z "$target_name" ]; then
-    target_name=$(basename "$repo_url" .git)
+    target_name=$(clean_module_name "$repo_url")
+  else
+    target_name=$(clean_module_name "$target_name")
   fi
 
   local target_dir="./modules/$target_name"

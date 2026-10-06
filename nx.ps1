@@ -22,6 +22,7 @@ if (Test-Path (Join-Path $ScriptDir "nxt-cli")) {
 . (Join-Path $CliLibDir "lib\ModuleUpdater.ps1")
 . (Join-Path $CliLibDir "lib\ModuleLister.ps1")
 . (Join-Path $CliLibDir "lib\ModuleRemover.ps1")
+. (Join-Path $CliLibDir "lib\ModulePusher.ps1")
 . (Join-Path $CliLibDir "lib\CliInitializer.ps1")
 
 if ($allArgs.Length -eq 0) {
@@ -61,6 +62,11 @@ switch ($first) {
         } elseif ($second -in "-d", "--delete") {
             Remove-NxModule -ModuleName $third -CliDir $CliLibDir
         } else {
+            if ($second -in "--standalone", "-s" -or $third -in "--standalone", "-s") {
+                Write-Host "[ERROR] L'option '-s' / '--standalone' a ete supprimee. Le developpement isole (playground) n'est plus supporte." -ForegroundColor Red
+                Write-Host "Utilisez directement : nx -m <nom_du_module>" -ForegroundColor Yellow
+                exit 1
+            }
             New-NxModule -ModuleName $second -CliDir $CliLibDir
         }
         break
@@ -76,6 +82,10 @@ switch ($first) {
     }
     { $_ -in "-u", "--update" } {
         Update-NxModule -ModuleName $second
+        break
+    }
+    { $_ -in "-p", "--push", "push" } {
+        Push-NxModule -ModuleName $second -CommitMessage $third -Branch $fourth
         break
     }
     { $_ -in "-l", "--list" } {

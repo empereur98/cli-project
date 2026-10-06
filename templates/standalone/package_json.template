@@ -1,0 +1,7 @@
+{
+  "name": "{{MODULE_NAME}}",
+  "version": "1.0.0",
+  "description": "EasyTrade Nuxt Module — {{MODULE_NAME}}",
+  "type": "module",
+  "main": "./index.ts"
+}

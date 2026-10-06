@@ -12,6 +12,7 @@ show_help() {
   echo -e "  \033[1;32m--init\033[0m                       Initialize global 'nx' CLI in system/user PATH"
   echo -e "  \033[1;32m-i, --import [url|name]\033[0m      Import module(s) from nx.config.json or GitHub URL"
   echo -e "  \033[1;32m-u, --update [name]\033[0m          Pull latest Git changes for a module or all modules"
+  echo -e "  \033[1;32m-p, --push <name> [msg]\033[0m      Stage, commit, and push module changes to remote Git"
   echo -e "  \033[1;32m-l, --list\033[0m                   List all installed modules with version, repo, and role"
   echo -e "  \033[1;32mman, --man\033[0m                   Open the manual documentation page (man nx)"
   echo -e "  \033[1;32m-h, --help\033[0m                   Display this help message and exit"

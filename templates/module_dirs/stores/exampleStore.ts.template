@@ -1,4 +1,4 @@
-export const useExampleStore = () => {
+export const use{{PASCAL_NAME}}Store = () => {
   const isLoaded = useState('{{CONFIG_KEY}}_store_is_loaded', () => false)
   const items = useState<string[]>('{{CONFIG_KEY}}_store_items', () => [])
 

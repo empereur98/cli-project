@@ -77,20 +77,37 @@ function Get-NxModuleRow {
 }
 
 function Show-NxModules {
-    $modulesDir = ".\modules"
+    $modulesDir = ""
+    if (Test-Path ".\modules") {
+        $modulesDir = ".\modules"
+    } elseif ((Split-Path -Leaf (Get-Location).Path) -eq "modules") {
+        $modulesDir = "."
+    } elseif (Test-Path "..\modules") {
+        $modulesDir = "..\modules"
+    }
+
     $moduleList = [System.Collections.Generic.List[PSCustomObject]]::new()
 
-    if (Test-Path $modulesDir) {
+    if ($modulesDir -and (Test-Path $modulesDir)) {
         Get-ChildItem -Directory $modulesDir | ForEach-Object {
-            $moduleList.Add((Get-NxModuleRow -Dir $_.FullName))
+            $name = $_.Name
+            if ($name -ne "node_modules" -and $name -ne ".git" -and $name -ne "nxt-cli") {
+                $moduleList.Add((Get-NxModuleRow -Dir $_.FullName))
+            }
         }
     }
 
-    Get-ChildItem -Directory ".\" | ForEach-Object {
-        $name = $_.Name
-        if ($name -ne "modules" -and $name -ne "nxt-cli" -and $name -ne "node_modules" -and $name -ne ".git") {
-            if ((Test-Path (Join-Path $_.FullName "index.ts")) -and (Test-Path (Join-Path $_.FullName "package.json"))) {
-                $moduleList.Add((Get-NxModuleRow -Dir $_.FullName))
+    if ((Test-Path ".\nuxt.config.ts") -or (Test-Path ".\nuxt.config.js")) {
+        Get-ChildItem -Directory ".\" | ForEach-Object {
+            $name = $_.Name
+            if ($name -ne "modules" -and $name -ne "nxt-cli" -and $name -ne "node_modules" -and $name -ne ".git" -and $name -ne "app" -and $name -ne "public" -and $name -ne "server") {
+                if ((Test-Path (Join-Path $_.FullName "index.ts")) -and (Test-Path (Join-Path $_.FullName "package.json"))) {
+                    $exists = $false
+                    foreach ($m in $moduleList) { if ($m.ModuleName -eq $name) { $exists = $true; break } }
+                    if (-not $exists) {
+                        $moduleList.Add((Get-NxModuleRow -Dir $_.FullName))
+                    }
+                }
             }
         }
     }

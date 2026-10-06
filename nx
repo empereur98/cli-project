@@ -28,6 +28,7 @@ source "$CLI_LIB_DIR/lib/module_importer.sh"
 source "$CLI_LIB_DIR/lib/module_updater.sh"
 source "$CLI_LIB_DIR/lib/module_lister.sh"
 source "$CLI_LIB_DIR/lib/module_remover.sh"
+source "$CLI_LIB_DIR/lib/module_pusher.sh"
 source "$CLI_LIB_DIR/lib/cli_initializer.sh"
 source "$CLI_LIB_DIR/lib/cli_parser.sh"
 
