@@ -104,6 +104,7 @@ Si un collègue vous a partagé un projet Nuxt déjà généré avec `nxt-cli` :
 | `nx -d <feature>` | **Racine du projet Nuxt** | Supprime un module proprement (fichiers + configs) | `nx -d auth` |
 | `nx -i [url]` | **Racine du projet Nuxt** | Importe un module distant depuis GitHub | `nx -i user/repo` |
 | `nx -u [feature]` | **Racine du projet Nuxt** | Met à jour un module distant (`git pull`) | `nx -u auth` |
+| `nx -p <feature> [msg]` | **Racine du projet Nuxt** | Pousse les modifications vers le dépôt distant du module | `nx -p auth "feat: login"` |
 | `nx --help` | N'importe où | Affiche l'aide synthétique | `nx --help` |
 | `nx man` | N'importe où | Ouvre le manuel d'utilisation complet | `nx man` |
 
@@ -219,6 +220,7 @@ nxt-cli/
 │   ├── ModuleCreator.ps1    / module_creator.sh     # Création Feature Module (-m)
 │   ├── ModuleImporter.ps1   / module_importer.sh    # Import Git de modules (-i)
 │   ├── ModuleLister.ps1     / module_lister.sh      # Liste des modules (-l)
+│   ├── ModulePusher.ps1     / module_pusher.sh      # Push vers le dépôt du module (-p)
 │   ├── ModuleRemover.ps1    / module_remover.sh     # Suppression de modules (-d)
 │   ├── ModuleUpdater.ps1    / module_updater.sh     # Mise à jour Git (-u)
 │   ├── ProgressBar.ps1      / progress_bar.sh       # Indicateurs de progression
@@ -226,5 +228,5 @@ nxt-cli/
 │   └── TailwindInstaller.ps1/ tailwind_installer.sh # Configuration Tailwind
 ├── man/
 │   └── nx.1                 # Documentation UNIX man
-└── templates/               # Modèles de code Nuxt 3/4 & Feature Modules
+└── templates/               # Modèles de code Nuxt 3/4 & Feature Modules (sans playground)
 ```
